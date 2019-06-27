@@ -1,0 +1,19 @@
+FROM node:10.14.2
+
+# Create app directory
+RUN mkdir -p /app
+RUN chmod 777 /app
+WORKDIR /app
+
+# Install app dependencies
+COPY package.json /app
+COPY yarn.lock /app
+RUN yarn
+
+# Bundle app source
+COPY . /app
+RUN npm install -g typescript
+RUN yarn build
+
+EXPOSE 80
+CMD [ "yarn", "start" ]
